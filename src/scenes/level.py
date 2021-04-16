@@ -1195,6 +1195,7 @@ class Level:
         self.animation = Animation([{'sprite': constant_sprites['new_turn'], 'pos': constant_sprites['new_turn_pos']}],
                                    60)
 
+    #ToDo: change this so a left click closes menu
     def left_click(self, pos):
         if self.active_menu:
             self.execute_action(self.active_menu.type, self.active_menu.click(pos))
@@ -1269,6 +1270,7 @@ class Level:
         is_initialization = self.game_phase is LevelStatus.INITIALIZATION
         self.active_menu = menuCreatorManager.create_main_menu(is_initialization, pos)
 
+    #ToDo: study here to learn how the click closes the window
     def right_click(self):
         if self.selected_player:
             if self.possible_moves:
@@ -1301,6 +1303,11 @@ class Level:
             self.watched_ent = None
             self.possible_moves = {}
             self.possible_attacks = []
+
+    #ToDo: add in an escape key method.
+    def escape_key(self):
+        if self.active_menu is not None:
+            self.execute_action(self.active_menu.type, (GenericActions.CLOSE, ""))
 
     def click(self, button, pos):
         # No event if there is an animation or it is not player turn

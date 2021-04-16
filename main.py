@@ -51,6 +51,14 @@ if __name__ == "__main__":
             elif e.type == pg.MOUSEBUTTONDOWN:
                 if e.button == 1 or e.button == 3:
                     start_screen.button_down(e.button, e.pos)
+            elif e.type == pg.KEYDOWN:
+                if e.key == pg.K_ESCAPE:
+                    print("esc_down")
+            elif e.type == pg.KEYUP:
+                if e.key == pg.K_ESCAPE:
+                    print("esc_up")
+                    start_screen.key(e.key)
+            #ToDo: may need to update this for an escape key
         start_screen.update_state()
         start_screen.display()
         show_fps(screen, clock, fonts.fonts['FPS_FONT'])
