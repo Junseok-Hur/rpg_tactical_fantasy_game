@@ -1270,7 +1270,6 @@ class Level:
         is_initialization = self.game_phase is LevelStatus.INITIALIZATION
         self.active_menu = menuCreatorManager.create_main_menu(is_initialization, pos)
 
-    #ToDo: study here to learn how the click closes the window
     def right_click(self):
         if self.selected_player:
             if self.possible_moves:
@@ -1279,22 +1278,10 @@ class Level:
                 self.selected_player = None
                 self.possible_moves = {}
             elif self.active_menu is not None:
-                # Test if player is on character's main menu, in this case, current move should be cancelled if possible
-                if self.active_menu.type is CharacterMenu:
-                    if self.selected_player.cancel_move():
-                        self.selected_player.selected = False
-                        self.selected_player = None
-                        self.possible_moves = {}
-                        self.active_menu = None
-                    return
-                self.execute_action(self.active_menu.type,
-                                    self.active_menu.buttons[len(self.active_menu.buttons) - 1].action_triggered())
-            # Want to cancel an interaction (not already performed)
+                self.cancel_action()
+                # Want to cancel an interaction (not already performed)
             elif self.possible_interactions or self.possible_attacks:
-                self.selected_player.cancel_interaction()
-                self.possible_interactions = []
-                self.possible_attacks = []
-                self.active_menu = self.background_menus.pop()[0]
+                self.cancel_interaction()
             return
         # Test if player is on main menu
         if self.active_menu is not None:
@@ -1304,8 +1291,16 @@ class Level:
             self.possible_moves = {}
             self.possible_attacks = []
 
-    #ToDo: add in an escape key method.
+    #ToDo: edit this to cancel actions, fix trade issue
     def escape_key(self):
+        if self.selected_player:
+            if self.active_menu is not None:
+                self.cancel_action()
+                # Want to cancel an interaction (not already performed)
+            elif self.possible_interactions or self.possible_attacks:
+                self.cancel_interaction()
+            return
+
         if self.active_menu is not None:
             self.execute_action(self.active_menu.type, (GenericActions.CLOSE, ""))
 
@@ -1348,3 +1343,21 @@ class Level:
                     if ent.get_rect().collidepoint(pos):
                         self.hovered_ent = ent
                         return
+
+    def cancel_action(self):
+        # Test if player is on character's main menu, in this case, current move should be cancelled if possible
+        if self.active_menu.type is CharacterMenu:
+            if self.selected_player.cancel_move():
+                self.selected_player.selected = False
+                self.selected_player = None
+                self.possible_moves = {}
+                self.active_menu = None
+            return
+        self.execute_action(self.active_menu.type,
+                            self.active_menu.buttons[len(self.active_menu.buttons) - 1].action_triggered())
+
+    def cancel_interaction(self):
+        self.selected_player.cancel_interaction()
+        self.possible_interactions = []
+        self.possible_attacks = []
+        self.active_menu = self.background_menus.pop()[0]

@@ -213,9 +213,11 @@ class StartScreen:
         if self.level is not None:
             self.level.button_down(button, pos)
 
-    #ToDo: add a key method here too. If no level yet, close the game. If level, make it close
     def key(self, key):
-        if self.level is not None:
+        if self.level is None:
             if key == pg.K_ESCAPE:
-                pass
-                # ToDo: this will go to a new method at the bottom of level.py
+                self.exit_game()
+        else:
+            if key == pg.K_ESCAPE:
+                self.level.escape_key()
+        return self.exit

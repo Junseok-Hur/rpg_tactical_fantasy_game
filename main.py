@@ -57,8 +57,8 @@ if __name__ == "__main__":
             elif e.type == pg.KEYUP:
                 if e.key == pg.K_ESCAPE:
                     print("esc_up")
-                    start_screen.key(e.key)
-            #ToDo: may need to update this for an escape key
+                    quit_game = start_screen.key(e.key)
+
         start_screen.update_state()
         start_screen.display()
         show_fps(screen, clock, fonts.fonts['FPS_FONT'])

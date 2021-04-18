@@ -23,7 +23,7 @@ def create_shop_menu(stock, gold):
     entries = []
     row = []
     for i, it in enumerate(stock):
-        entry = {'type': 'item_button', 'item': it['item'], 'price': it['item'].price, 'quantity': it['quantity'],
+        entry = {'type': 'item_button', 'item': it['item'], 'iprice': it['item'].price, 'quantity': it['quantity'],
                  'index': i, 'id': BuyMenu.INTERAC_BUY}
         row.append(entry)
         if len(row) == 2:
