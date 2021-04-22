@@ -38,6 +38,17 @@ if __name__ == "__main__":
     pg.mixer.music.load(os.path.join('sound_fx', 'sndtrk.ogg'))
     pg.mixer.music.play(-1)
 
+    #player = Player(...)
+#level_state = Level(...)
+
+    # saving
+    #with open('savefile.dat', 'wb') as f:
+        #pickle.dump([player, level_state], f, protocol=2)
+
+# loading
+#with open('savefile.dat', 'rb') as f:
+    #player, level_state = pickle.load(f)
+
     quit_game = False
     while not quit_game:
         for e in pg.event.get():
