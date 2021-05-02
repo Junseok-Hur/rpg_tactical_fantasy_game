@@ -53,10 +53,9 @@ if __name__ == "__main__":
                     start_screen.button_down(e.button, e.pos)
             elif e.type == pg.KEYDOWN:
                 if e.key == pg.K_ESCAPE:
-                    print("esc_down")
+                    pass
             elif e.type == pg.KEYUP:
                 if e.key == pg.K_ESCAPE:
-                    print("esc_up")
                     quit_game = start_screen.key(e.key)
 
         start_screen.update_state()
