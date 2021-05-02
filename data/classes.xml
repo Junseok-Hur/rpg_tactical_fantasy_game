@@ -88,4 +88,20 @@
           </skill>
         </skills>
     </spy>
+    <mage>
+        <stats_up>
+            <hp>
+                1, 2, 2, 2, 3
+            </hp>
+            <strength>
+                0, 1, 1, 3
+            </strength>
+            <defense>
+                0, 0
+            </defense>
+            <resistance>
+                0, 0
+            </resistance>
+        </stats_up>
+    </mage>
 </classes>
