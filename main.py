@@ -5,7 +5,7 @@ def show_fps(win, inner_clock, font):
 
 if __name__ == "__main__":
     import os
-
+    import pickle
     from src.constants import *
     from src.gui import constantSprites, fonts
     from src.game_entities.movable import Movable
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     races = Loader.load_races()
     classes = Loader.load_classes()
     Character.init_data(races, classes)
-
+    data = Character
     clock = pg.time.Clock()
 
     start_screen = StartScreen(screen)
@@ -38,16 +38,11 @@ if __name__ == "__main__":
     pg.mixer.music.load(os.path.join('sound_fx', 'sndtrk.ogg'))
     pg.mixer.music.play(-1)
 
-    #player = Player(...)
-#level_state = Level(...)
+    with open('save_file', 'w') as f:
+        pickle.dump(data, f)
 
-    # saving
-    #with open('savefile.dat', 'wb') as f:
-        #pickle.dump([player, level_state], f, protocol=2)
-
-# loading
-#with open('savefile.dat', 'rb') as f:
-    #player, level_state = pickle.load(f)
+    with open('save_file', 'r') as f:
+        data = pickle.load(f)
 
     quit_game = False
     while not quit_game:
