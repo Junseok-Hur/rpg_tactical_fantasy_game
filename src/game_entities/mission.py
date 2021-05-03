@@ -9,6 +9,7 @@ class MissionType(Enum):
     KILL_EVERYBODY = auto()
     KILL_TARGETS = auto()
     TURN_LIMIT = auto()
+    NO_DEATHS = auto()
 
 
 class Mission:
@@ -45,4 +46,6 @@ class Mission:
             self.ended = len(entities['foes']) == 0
         elif self.type is MissionType.TURN_LIMIT:
             self.ended = turns <= self.turn_limit
+        elif self.type is MissionType.NO_DEATHS:
+            self.ended = len(entities['players']) >= 3
         return True

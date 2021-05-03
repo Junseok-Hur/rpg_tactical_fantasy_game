@@ -578,13 +578,14 @@ class Level:
             # No more menu : turn is finished
             self.background_menus = []
 
-            # ToDo: try adding a popup menu here.
-            #  Send the first menu to the background first, then this
-            self.background_menus.append((self.active_menu, True))
-            msg_entries = [[{'type': 'text', 'text': 'Welcome to the shop!',
-                             'font': fonts['ITEM_DESC_FONT'], 'margin': (20, 0, 20, 0)}]]
-            self.active_menu = InfoBox("Shopkeep:", "", "imgs/interface/PopUpMenu.png", msg_entries,
-                                       ITEM_DELETE_MENU_WIDTH, close_button=UNFINAL_ACTION)
+            if isinstance(target, Shop):
+                # ToDo: try adding a popup menu here.
+                #  Send the first menu to the background first, then this
+                self.background_menus.append((self.active_menu, True))
+                msg_entries = [[{'type': 'text', 'text': 'Welcome to the shop!',
+                                 'font': fonts['ITEM_DESC_FONT'], 'margin': (20, 0, 20, 0)}]]
+                self.active_menu = InfoBox("Shopkeeper:", "", "imgs/interface/PopUpMenu.png", msg_entries,
+                                           ITEM_DELETE_MENU_WIDTH, close_button=UNFINAL_ACTION)
 
     def remove_entity(self, entity):
         collection = None
@@ -1013,13 +1014,14 @@ class Level:
             self.active_menu = InfoBox(str(self.selected_item), "", "imgs/interface/PopUpMenu.png", entries,
                                        ITEM_INFO_MENU_WIDTH, close_button=UNFINAL_ACTION)
         # Buy an item
+        #ToDo: only life potions can be bought. Others will pull up text but do nothing
         elif method_id is ItemMenu.BUY_ITEM:
             # Try to buy the item
-            result_msg = self.active_shop.buy(self.selected_player, self.selected_item)
-
+            self.active_shop.buy(self.selected_player, self.selected_item)
+            result_msg = f"Here's your {self.selected_item}"
             entries = [[{'type': 'text', 'text': result_msg,
                          'font': fonts['ITEM_DESC_FONT'], 'margin': (20, 0, 20, 0)}]]
-            self.active_menu = InfoBox(str(self.selected_item), "", "imgs/interface/PopUpMenu.png", entries,
+            self.active_menu = InfoBox("Shopkeeper", "", "imgs/interface/PopUpMenu.png", entries,
                                        ITEM_INFO_MENU_WIDTH, close_button=UNFINAL_ACTION)
         # Sell an item
         elif method_id is ItemMenu.SELL_ITEM:
@@ -1044,9 +1046,9 @@ class Level:
             else:
                 self.background_menus.append((self.active_menu, False))
 
-            entries = [[{'type': 'text', 'text': result_msg,
+            entries = [[{'type': 'text', 'text': f"Thank you for business.",
                          'font': fonts['ITEM_DESC_FONT'], 'margin': (20, 0, 20, 0)}]]
-            self.active_menu = InfoBox(str(self.selected_item), "", "imgs/interface/PopUpMenu.png", entries,
+            self.active_menu = InfoBox("Shopkeep", "", "imgs/interface/PopUpMenu.png", entries,
                                        ITEM_INFO_MENU_WIDTH, close_button=UNFINAL_ACTION)
         # Trade an item from one player to another player
 
@@ -1154,7 +1156,13 @@ class Level:
         # Test if the action is a generic one (according to the method_id)
         # Close menu : Active menu is closed
         if method_id is GenericActions.CLOSE:
+            old_menu = self.active_menu.type
             self.active_menu = None
+            if old_menu is ShopMenu:
+                msg_entries = [[{'type': 'text', 'text': 'Thanks for the business. Please come again!',
+                                 'font': fonts['ITEM_DESC_FONT'], 'margin': (20, 0, 20, 0)}]]
+                self.active_menu = InfoBox("Shopkeeper:", "", "imgs/interface/PopUpMenu.png", msg_entries,
+                                           ITEM_DELETE_MENU_WIDTH, close_button=UNFINAL_ACTION)
             if len(args) >= 3 and args[2][0] == FINAL_ACTION:
                 # Turn is finished
                 self.background_menus = []

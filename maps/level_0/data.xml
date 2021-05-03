@@ -506,5 +506,23 @@
                 <y>3</y>
             </position>
         </main>
+        <mission>
+            <type>KILL_EVERYBODY</type>
+            <description>
+                Defeat all enemies
+            </description>
+            <reward>
+                <gold>300</gold>
+            </reward>
+        </mission>
+        <mission>
+            <type>NO_DEATHS</type>
+            <description>
+                Have all friendlies survive
+            </description>
+            <reward>
+                <gold>150</gold>
+            </reward>
+        </mission>
     </missions>
 </level>
