@@ -578,6 +578,14 @@ class Level:
             # No more menu : turn is finished
             self.background_menus = []
 
+            # ToDo: try adding a popup menu here.
+            #  Send the first menu to the background first, then this
+            self.background_menus.append((self.active_menu, True))
+            msg_entries = [[{'type': 'text', 'text': 'Welcome to the shop!',
+                             'font': fonts['ITEM_DESC_FONT'], 'margin': (20, 0, 20, 0)}]]
+            self.active_menu = InfoBox("Shopkeep:", "", "imgs/interface/PopUpMenu.png", msg_entries,
+                                       ITEM_DELETE_MENU_WIDTH, close_button=UNFINAL_ACTION)
+
     def remove_entity(self, entity):
         collection = None
         if isinstance(entity, Foe):
@@ -1071,6 +1079,7 @@ class Level:
                 # Update the inventory menu (i.e. first menu backward)
                 self.background_menus[len(self.background_menus) - 1] = (new_trade_menu, True)
 
+                #ToDo: this is how the popup menu works
                 msg_entries = [[{'type': 'text', 'text': 'Item has been traded.',
                                  'font': fonts['ITEM_DESC_FONT'], 'margin': (20, 0, 20, 0)}]]
 
