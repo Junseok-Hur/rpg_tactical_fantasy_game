@@ -927,6 +927,32 @@
                 head/full_gold.png
             </equipped_sprite>
         </gold_helmet>
+        <wizard_hat>
+            <name>
+                Wizard hat
+            </name>
+            <sprite>
+                armor/headgear/wizard_hat_1.png
+            </sprite>
+            <info>
+                An old and worn-out hat... useful for beginner mage
+            </info>
+            <category>
+                armor
+            </category>
+            <bodypart>
+                head
+            </bodypart>
+            <def>
+                1
+            </def>
+            <weight>
+                2
+            </weight>
+            <equipped_sprite>
+                head/wizard_blackgold.png
+            </equipped_sprite>
+        </wizard_hat>
         <chainmail>
             <name>
                 Chainmail
@@ -996,6 +1022,41 @@
                 </classes>
             </restrictions>
         </leather_armor>
+        <robe>
+            <name>
+                Robe
+            </name>
+            <sprite>
+                armor/torso/robe_2_new.png
+            </sprite>
+            <info>
+                A basic robe for the mage class, useful for beginning an adventure !
+            </info>
+            <category>
+                armor
+            </category>
+            <bodypart>
+                body
+            </bodypart>
+            <def>
+                1
+            </def>
+            <weight>
+                2
+            </weight>
+            <equipped_sprites>
+                <sprite>body/robe_white_blue.png</sprite>
+                <sprite>legs/skirt_white.png</sprite>
+            </equipped_sprites>
+            <price>
+                350
+            </price>
+            <restrictions>
+                <classes>
+                    mage
+                </classes>
+            </restrictions>
+        </robe>
         <scale_mail>
             <name>
                 Scale mail
@@ -1064,6 +1125,40 @@
                 </classes>
             </restrictions>
         </gold_armor>
+        <spy_outfit>
+            <name>
+                Spy outfit
+            </name>
+            <sprite>
+                armor/artefact/urand_thief.png
+            </sprite>
+            <info>
+                A very black outfit for someone who needs some discretion
+            </info>
+            <category>
+                armor
+            </category>
+            <bodypart>
+                body
+            </bodypart>
+            <def>
+                2
+            </def>
+            <weight>
+                1
+            </weight>
+            <equipped_sprite>
+                body/outfits/spy_outfit.png
+            </equipped_sprite>
+            <price>
+                800
+            </price>
+            <restrictions>
+                <classes>
+                    spy
+                </classes>
+            </restrictions>
+        </spy_outfit>
         <spy_outfit>
             <name>
                 Spy outfit
