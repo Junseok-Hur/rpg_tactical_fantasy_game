@@ -38,11 +38,13 @@ if __name__ == "__main__":
     pg.mixer.music.load(os.path.join('sound_fx', 'sndtrk.ogg'))
     pg.mixer.music.play(-1)
 
+    '''
     with open('save_file', 'w') as f:
         pickle.dump(data, f)
 
     with open('save_file', 'r') as f:
         data = pickle.load(f)
+    '''
 
     quit_game = False
     while not quit_game:
@@ -57,6 +59,13 @@ if __name__ == "__main__":
             elif e.type == pg.MOUSEBUTTONDOWN:
                 if e.button == 1 or e.button == 3:
                     start_screen.button_down(e.button, e.pos)
+            elif e.type == pg.KEYDOWN:
+                if e.key == pg.K_ESCAPE:
+                    pass
+            elif e.type == pg.KEYUP:
+                if e.key == pg.K_ESCAPE:
+                    quit_game = start_screen.key(e.key)
+
         start_screen.update_state()
         start_screen.display()
         show_fps(screen, clock, fonts.fonts['FPS_FONT'])

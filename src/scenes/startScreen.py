@@ -220,3 +220,12 @@ class StartScreen:
     def button_down(self, button, pos):
         if self.level is not None:
             self.level.button_down(button, pos)
+
+    def key(self, key):
+        if self.level is None:
+            if key == pg.K_ESCAPE:
+                self.exit_game()
+        else:
+            if key == pg.K_ESCAPE:
+                self.level.escape_key()
+        return self.exit

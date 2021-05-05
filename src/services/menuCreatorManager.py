@@ -23,7 +23,7 @@ def create_shop_menu(stock, gold):
     entries = []
     row = []
     for i, it in enumerate(stock):
-        entry = {'type': 'item_button', 'item': it['item'], 'price': it['item'].price, 'quantity': it['quantity'],
+        entry = {'type': 'item_button', 'item': it['item'], 'iprice': it['item'].price, 'quantity': it['quantity'],
                  'index': i, 'id': BuyMenu.INTERAC_BUY}
         row.append(entry)
         if len(row) == 2:
@@ -342,6 +342,7 @@ def create_item_sell_menu(item_button_pos, item):
                    entries, ACTION_MENU_WIDTH, el_rect_linked=item_rect, close_button=UNFINAL_ACTION)
 
 
+# ToDo: this is the menu that pops up to do the trade
 def create_trade_item_menu(item_button_pos, item, players):
     entries = [
         [{'name': 'Info', 'id': ItemMenu.INFO_ITEM}],
