@@ -129,6 +129,14 @@ class StartScreen:
             width = self.screen.get_width() // 2
             self.active_menu = InfoBox(name, "", "imgs/interface/PopUpMenu.png",
                                        entries, width, close_button=1)
+            # If file is corrupted
+            self.background_menus.append([self.active_menu, True])
+
+            name1 = "Error!"
+            entries1 = [[{'type': 'text', 'text': "Corrupted save file.", 'font': fonts['MENU_SUB_TITLE_FONT']}]]
+            width1 = self.screen.get_width() // 2
+            self.active_menu = InfoBox(name1, "", "imgs/interface/PopUpMenu.png",
+                                       entries1, width1, close_button=1)
 
     def load_menu(self):
         self.background_menus.append([self.active_menu, False])
