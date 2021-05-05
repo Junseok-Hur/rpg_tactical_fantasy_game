@@ -310,5 +310,15 @@
                 Kill the Mutanter
             </description>
         </main>
+        <mission>
+            <type>TURN_LIMIT</type>
+            <description>
+                Win in 10 turns
+            </description>
+            <turns>10</turns>
+            <reward>
+                <gold>500</gold>
+            </reward>
+        </mission>
     </missions>
 </level>

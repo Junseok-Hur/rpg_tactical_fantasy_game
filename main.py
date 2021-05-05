@@ -57,6 +57,13 @@ if __name__ == "__main__":
             elif e.type == pg.MOUSEBUTTONDOWN:
                 if e.button == 1 or e.button == 3:
                     start_screen.button_down(e.button, e.pos)
+            elif e.type == pg.KEYDOWN:
+                if e.key == pg.K_ESCAPE:
+                    pass
+            elif e.type == pg.KEYUP:
+                if e.key == pg.K_ESCAPE:
+                    quit_game = start_screen.key(e.key)
+
         start_screen.update_state()
         start_screen.display()
         show_fps(screen, clock, fonts.fonts['FPS_FONT'])

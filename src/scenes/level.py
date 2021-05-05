@@ -145,6 +145,12 @@ class Level:
         self.wait_for_dest_tp = False
         self.diary_entries = []
 
+        #varables for canceling trades
+        self.cancelable_action = True
+        self.original_owner = None
+        self.original_receiver = None
+        self.original_item = None
+
         self.wait_sfx = pg.mixer.Sound(os.path.join('sound_fx', 'waiting.ogg'))
         self.inventory_sfx = pg.mixer.Sound(os.path.join('sound_fx', 'inventory.ogg'))
         self.armor_sfx = pg.mixer.Sound(os.path.join('sound_fx', 'armor.ogg'))
@@ -572,6 +578,15 @@ class Level:
             # No more menu : turn is finished
             self.background_menus = []
 
+            if isinstance(target, Shop):
+                # ToDo: try adding a popup menu here.
+                #  Send the first menu to the background first, then this
+                self.background_menus.append((self.active_menu, True))
+                msg_entries = [[{'type': 'text', 'text': 'Welcome to the shop!',
+                                 'font': fonts['ITEM_DESC_FONT'], 'margin': (20, 0, 20, 0)}]]
+                self.active_menu = InfoBox("Shopkeeper:", "", "imgs/interface/PopUpMenu.png", msg_entries,
+                                           ITEM_DELETE_MENU_WIDTH, close_button=UNFINAL_ACTION)
+
     def remove_entity(self, entity):
         collection = None
         if isinstance(entity, Foe):
@@ -753,6 +768,7 @@ class Level:
         # Memorize current action
         self.selected_player.current_action = method_id
 
+        # ToDo: look here for what happens once a character has moved.
         # Attack action : Character has to choose a target
         if method_id is CharacterMenu.ATTACK:
             self.background_menus.append((self.active_menu, False))
@@ -998,13 +1014,14 @@ class Level:
             self.active_menu = InfoBox(str(self.selected_item), "", "imgs/interface/PopUpMenu.png", entries,
                                        ITEM_INFO_MENU_WIDTH, close_button=UNFINAL_ACTION)
         # Buy an item
+        #ToDo: only life potions can be bought. Others will pull up text but do nothing
         elif method_id is ItemMenu.BUY_ITEM:
             # Try to buy the item
-            result_msg = self.active_shop.buy(self.selected_player, self.selected_item)
-
+            self.active_shop.buy(self.selected_player, self.selected_item)
+            result_msg = f"Here's your {self.selected_item}"
             entries = [[{'type': 'text', 'text': result_msg,
                          'font': fonts['ITEM_DESC_FONT'], 'margin': (20, 0, 20, 0)}]]
-            self.active_menu = InfoBox(str(self.selected_item), "", "imgs/interface/PopUpMenu.png", entries,
+            self.active_menu = InfoBox("Shopkeeper", "", "imgs/interface/PopUpMenu.png", entries,
                                        ITEM_INFO_MENU_WIDTH, close_button=UNFINAL_ACTION)
         # Sell an item
         elif method_id is ItemMenu.SELL_ITEM:
@@ -1029,11 +1046,12 @@ class Level:
             else:
                 self.background_menus.append((self.active_menu, False))
 
-            entries = [[{'type': 'text', 'text': result_msg,
+            entries = [[{'type': 'text', 'text': f"Thank you for business.",
                          'font': fonts['ITEM_DESC_FONT'], 'margin': (20, 0, 20, 0)}]]
-            self.active_menu = InfoBox(str(self.selected_item), "", "imgs/interface/PopUpMenu.png", entries,
+            self.active_menu = InfoBox("Shopkeep", "", "imgs/interface/PopUpMenu.png", entries,
                                        ITEM_INFO_MENU_WIDTH, close_button=UNFINAL_ACTION)
         # Trade an item from one player to another player
+
         elif method_id is ItemMenu.TRADE_ITEM:
             pg.mixer.Sound.play(self.inventory_sfx)
 
@@ -1041,6 +1059,10 @@ class Level:
             second_player = args[2][1]
             owner = first_player if args[2][2] == 0 else second_player
             receiver = second_player if args[2][2] == 0 else first_player
+
+            self.original_owner = owner
+            self.original_receiver = receiver
+            self.original_item = self.selected_item
 
             # Add item if possible
             added = receiver.set_item(self.selected_item)
@@ -1051,6 +1073,7 @@ class Level:
 
                 self.background_menus.append((self.active_menu, False))
             else:
+                self.cancelable_action = False
                 # Remove item from owner inventory according to index
                 owner.remove_item(self.selected_item)
 
@@ -1058,6 +1081,7 @@ class Level:
                 # Update the inventory menu (i.e. first menu backward)
                 self.background_menus[len(self.background_menus) - 1] = (new_trade_menu, True)
 
+                #ToDo: this is how the popup menu works
                 msg_entries = [[{'type': 'text', 'text': 'Item has been traded.',
                                  'font': fonts['ITEM_DESC_FONT'], 'margin': (20, 0, 20, 0)}]]
 
@@ -1132,7 +1156,13 @@ class Level:
         # Test if the action is a generic one (according to the method_id)
         # Close menu : Active menu is closed
         if method_id is GenericActions.CLOSE:
+            old_menu = self.active_menu.type
             self.active_menu = None
+            if old_menu is ShopMenu:
+                msg_entries = [[{'type': 'text', 'text': 'Thanks for the business. Please come again!',
+                                 'font': fonts['ITEM_DESC_FONT'], 'margin': (20, 0, 20, 0)}]]
+                self.active_menu = InfoBox("Shopkeeper:", "", "imgs/interface/PopUpMenu.png", msg_entries,
+                                           ITEM_DELETE_MENU_WIDTH, close_button=UNFINAL_ACTION)
             if len(args) >= 3 and args[2][0] == FINAL_ACTION:
                 # Turn is finished
                 self.background_menus = []
@@ -1195,6 +1225,7 @@ class Level:
         self.animation = Animation([{'sprite': constant_sprites['new_turn'], 'pos': constant_sprites['new_turn_pos']}],
                                    60)
 
+    #ToDo: change this so a left click closes menu
     def left_click(self, pos):
         if self.active_menu:
             self.execute_action(self.active_menu.type, self.active_menu.click(pos))
@@ -1271,28 +1302,22 @@ class Level:
 
     def right_click(self):
         if self.selected_player:
-            if self.possible_moves:
-                # Player was waiting to move
-                self.selected_player.selected = False
-                self.selected_player = None
-                self.possible_moves = {}
-            elif self.active_menu is not None:
-                # Test if player is on character's main menu, in this case, current move should be cancelled if possible
-                if self.active_menu.type is CharacterMenu:
-                    if self.selected_player.cancel_move():
-                        self.selected_player.selected = False
-                        self.selected_player = None
-                        self.possible_moves = {}
-                        self.active_menu = None
-                    return
-                self.execute_action(self.active_menu.type,
-                                    self.active_menu.buttons[len(self.active_menu.buttons) - 1].action_triggered())
-            # Want to cancel an interaction (not already performed)
-            elif self.possible_interactions or self.possible_attacks:
-                self.selected_player.cancel_interaction()
-                self.possible_interactions = []
-                self.possible_attacks = []
-                self.active_menu = self.background_menus.pop()[0]
+            if self.cancelable_action:
+
+                if self.possible_moves:
+                    # Player was waiting to move
+                    self.selected_player.selected = False
+                    self.selected_player = None
+                    self.possible_moves = {}
+                elif self.active_menu is not None:
+                    self.cancel_action()
+                    # Want to cancel an interaction (not already performed)
+                elif self.possible_interactions or self.possible_attacks:
+                    self.cancel_interaction()
+                return
+            elif self.cancelable_action is False:
+                self.selected_player.end_turn()
+                self.cancelable_action = True
             return
         # Test if player is on main menu
         if self.active_menu is not None:
@@ -1301,6 +1326,30 @@ class Level:
             self.watched_ent = None
             self.possible_moves = {}
             self.possible_attacks = []
+
+    def escape_key(self):
+        if self.selected_player:
+            if self.cancelable_action:
+                if self.possible_moves:
+                    # Player was waiting to move
+                    self.selected_player.selected = False
+                    self.selected_player = None
+                    self.possible_moves = {}
+                elif self.active_menu is not None:
+                    self.cancel_action()
+                    # Want to cancel an interaction (not already performed)
+                elif self.possible_interactions or self.possible_attacks:
+                    self.cancel_interaction()
+                return
+            elif self.cancelable_action is False:
+                self.selected_player.end_turn()
+                self.cancelable_action = True
+            return
+
+        if self.active_menu is not None:
+            self.execute_action(self.active_menu.type, (GenericActions.CLOSE, ""))
+
+        # try to fix crash error
 
     def click(self, button, pos):
         # No event if there is an animation or it is not player turn
@@ -1341,3 +1390,22 @@ class Level:
                     if ent.get_rect().collidepoint(pos):
                         self.hovered_ent = ent
                         return
+
+    def cancel_action(self):
+        # Test if player is on character's main menu, in this case, current move should be cancelled if possible
+        if self.active_menu.type is CharacterMenu and not self.selected_player.turn_is_finished():
+            if self.selected_player.cancel_move():
+                self.selected_player.selected = False
+                self.selected_player = None
+                self.possible_moves = {}
+                self.active_menu = None
+            return
+        self.execute_action(self.active_menu.type,
+                            self.active_menu.buttons[len(self.active_menu.buttons) - 1].action_triggered())
+
+    def cancel_interaction(self):
+        self.selected_player.cancel_interaction()
+        self.possible_interactions = []
+        self.possible_attacks = []
+        # this list can be empty
+        self.active_menu = self.background_menus.pop()[0]
