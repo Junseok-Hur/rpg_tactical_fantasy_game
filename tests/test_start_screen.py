@@ -160,6 +160,7 @@ class TestStartScreen(unittest.TestCase):
         self.assertEqual(self.start_screen.level_id, old_level_id)
         self.assertEqual(self.start_screen.active_menu, old_active_menu)
 
+    #ToDo test esc key like below
     def test_right_click(self):
         # Make a copy of the current window
         screen = self.start_screen.screen.copy()
