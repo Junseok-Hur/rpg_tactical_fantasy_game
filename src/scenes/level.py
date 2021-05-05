@@ -221,6 +221,10 @@ class Level:
             self.end_level(constant_sprites['victory'], constant_sprites['victory_pos'])
             self.game_phase = LevelStatus.ENDED_VICTORY
             self.save_game(0)
+            self.active_menu = InfoBox("", "", "imgs/interface/PopUpMenu.png",
+                                       [[{'type': 'text', 'text': "Game has been automatically saved on slot 1",
+                                          'font': fonts['ITEM_DESC_FONT']}]],
+                                       ITEM_MENU_WIDTH, close_button=UNFINAL_ACTION)
             self.victory = False
             return None
         elif self.defeat:
