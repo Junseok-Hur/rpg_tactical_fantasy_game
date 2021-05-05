@@ -38,11 +38,13 @@ if __name__ == "__main__":
     pg.mixer.music.load(os.path.join('sound_fx', 'sndtrk.ogg'))
     pg.mixer.music.play(-1)
 
+    '''
     with open('save_file', 'w') as f:
         pickle.dump(data, f)
 
     with open('save_file', 'r') as f:
         data = pickle.load(f)
+    '''
 
     quit_game = False
     while not quit_game:
