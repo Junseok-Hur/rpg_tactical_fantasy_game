@@ -19,6 +19,10 @@
             <x>15</x>
             <y>8</y>
         </position>
+        <position>
+            <x>15</x>
+            <y>6</y>
+        </position>
     </placementArea>
     <events>
         <before_init>
@@ -81,6 +85,13 @@
                 <position>
                     <x>15</x>
                     <y>7</y>
+                </position>
+            </new_player>
+            <new_player>
+                <name>zygrit</name>
+                <position>
+                    <x>15</x>
+                    <y>8</y>
                 </position>
             </new_player>
         </before_init>

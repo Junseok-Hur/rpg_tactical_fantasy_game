@@ -46,6 +46,37 @@ class TestWeapon(unittest.TestCase):
         self.assertEqual(possible_effects, sword.effects)
         self.assertEqual(strong_against, sword.strong_against)
 
+    def test_init_spiritual_weapon(self):
+        name = 'wooden_staff'
+        sprite = 'imgs/dungeon_crawl/item/staff/staff_2.png'
+        description = 'A frail staff, usable to make a range attack with weak spells'
+        price = 400
+        equipped_sprite = ['imgs/dungeon_crawl/player/hand_right/staff_mage_2.png']
+        durability = 30
+        reach = [2]
+        power = 2
+        kind = 'SPIRITUAL'
+        weight = 2
+        restrictions = []
+        possible_effects = []
+        strong_against = [Keyword.CAVALRY]
+        staff = Weapon(name, sprite, description, price, equipped_sprite, power, kind, weight, durability, reach,
+                       restrictions, possible_effects, strong_against)
+        self.assertEqual(name, staff.name)
+        self.assertEqual(description, staff.desc)
+        self.assertEqual('Wooden Staff', str(staff))
+        self.assertEqual(price, staff.price)
+        self.assertEqual(price // 2, staff.resell_price)
+        self.assertEqual(durability, staff.durability_max)
+        self.assertEqual(durability, staff.durability)
+        self.assertEqual(reach, staff.reach)
+        self.assertEqual(power, staff.atk)
+        self.assertEqual(DamageKind[kind], staff.attack_kind)
+        self.assertEqual(weight, staff.weight)
+        self.assertEqual(restrictions, staff.restrictions)
+        self.assertEqual(possible_effects, staff.effects)
+        self.assertEqual(strong_against, staff.strong_against)
+
     def test_decreasing_durability(self):
         durability = 40
         weapon = random_weapon(durability=durability)

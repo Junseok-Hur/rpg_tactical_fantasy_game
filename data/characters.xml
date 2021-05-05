@@ -196,4 +196,38 @@
             PHYSICAL
         </attack_kind>
     </doran>
+    <zygrit>
+        <name> zygrit </name>
+        <class> mage </class>
+        <race> halfling </race>
+        <level> 1 </level>
+        <strength> 8 </strength>
+        <defense> 0 </defense>
+        <resistance> 3 </resistance>
+        <hp> 12 </hp>
+        <sprite> dungeon_crawl/player/base/halfling_female.png </sprite>
+        <equipment>
+            <head>
+                wizard_hat
+            </head>
+            <body>
+                robe
+            </body>
+            <right_hand>
+                wooden_staff
+            </right_hand>
+            <feet>
+                black_boots
+            </feet>
+        </equipment>
+        <inventory>
+            <item>
+                life_potion
+            </item>
+        </inventory>
+        <gold> 150 </gold>
+        <attack_kind>
+            SPIRITUAL
+        </attack_kind>
+    </zygrit>
 </characters>

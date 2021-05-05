@@ -88,4 +88,23 @@
           </skill>
         </skills>
     </spy>
+    <mage>
+        <constitution>
+            2
+        </constitution>
+        <stats_up>
+            <hp>
+                1, 2, 2, 3, 3, 4
+            </hp>
+            <strength>
+                0, 1, 2, 2, 3
+            </strength>
+            <defense>
+                0, 1
+            </defense>
+            <resistance>
+                0, 1, 2
+            </resistance>
+        </stats_up>
+    </mage>
 </classes>

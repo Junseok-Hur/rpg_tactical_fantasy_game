@@ -46,4 +46,12 @@
             6
         </move>
     </gnome>
+    <halfling>
+        <constitution>
+            6
+        </constitution>
+        <move>
+            3
+        </move>
+    </halfling>
 </races>
