@@ -220,6 +220,7 @@ class Level:
         if self.victory:
             self.end_level(constant_sprites['victory'], constant_sprites['victory_pos'])
             self.game_phase = LevelStatus.ENDED_VICTORY
+            self.save_game(0)
             self.victory = False
             return None
         elif self.defeat:

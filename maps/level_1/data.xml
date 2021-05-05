@@ -19,6 +19,14 @@
             <x>9</x>
             <y>5</y>
         </position>
+        <position>
+            <x>11</x>
+            <y>4</y>
+        </position>
+        <position>
+            <x>11</x>
+            <y>5</y>
+        </position>
     </placementArea>
     <events>
         <before_init>
