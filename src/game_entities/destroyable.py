@@ -42,6 +42,7 @@ class Destroyable(Entity):
     def attacked(self, ent, damage, kind, allies):
         if kind is DamageKind.SPIRITUAL:
             real_damage = damage - self.res
+            pg.mixer.Sound.play(self.attack_sfx)
         elif kind is DamageKind.PHYSICAL:
             real_damage = damage - self.defense
             pg.mixer.Sound.play(self.attack_sfx)
